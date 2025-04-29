@@ -1,77 +1,53 @@
-// drizzle/schema.ts
-// Import Drizzle column types and table builder
-import {
-  pgTable,
-  text,
-  uuid,
-  date,
-  boolean,
-  timestamp,
-} from "drizzle-orm/pg-core";
+import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
-// Define the `users` table structure
-export const UserSchema = pgTable("users", {
-  id: uuid("id").defaultRandom().primaryKey(), // Unique user ID, generated as UUID
-  name: text("name").notNull(), // User's chosen display name
-  email: text("email").notNull().unique(), // User's email address for communication and login
-  emailVerified: boolean("email_verified").default(false).notNull(), // Whether the user's email is verified
-  image: text("image"), // Profile picture URL (optional)
-  createdAt: timestamp("created_at").defaultNow().notNull(), // Timestamp of when the user account was created
-  updatedAt: timestamp("updated_at").defaultNow().notNull(), // Timestamp of the last update to the user's information
-
-  // Additional fields
-  firstName: text("first_name").notNull(), // User's first name
-  lastName: text("last_name").notNull(), // User's last name
-  userName: text("username").notNull(), // User's username
-  sizing: text("sizing"), // Optional: S, M, L, etc.
-  gender: text("gender"), // Optional: male, female, other
-  role: text("role").default("user"), // User or admin (defaults to 'user')
-  hometown: text("hometown"), // City or neighborhood
-  birthday: date("birthday").notNull(), // Date of birth
-  sportsPlayed: text("sports_played"), // CSV string or later a join table
-  sportsWish: text("sports_wish"), // Same as above
-  recessFavorite: text("recess_favorite"), // Kickball, dodgeball, etc.
+export const user = pgTable("user", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
+  emailVerified: boolean("email_verified").notNull(),
+  image: text("image"),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
 });
 
-// Define the `sessions` table structure
-export const SessionSchema = pgTable("sessions", {
-  id: uuid("id").defaultRandom().primaryKey(), // Unique session ID
-  userId: uuid("user_id")
+export const session = pgTable("session", {
+  id: text("id").primaryKey(),
+  expiresAt: timestamp("expires_at").notNull(),
+  token: text("token").notNull().unique(),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  userId: text("user_id")
     .notNull()
-    .references(() => UserSchema.id, { onDelete: "cascade" }), // Foreign key to users
-  token: text("token").notNull().unique(), // Unique session token
-  expiresAt: timestamp("expires_at").notNull(), // Time when the session expires
-  ipAddress: text("ip_address"), // Optional: IP address of the device
-  userAgent: text("user_agent"), // Optional: User agent information of the device
-  createdAt: timestamp("created_at").defaultNow().notNull(), // Timestamp of when the session was created
-  updatedAt: timestamp("updated_at").defaultNow().notNull(), // Timestamp of when the session was updated
+    .references(() => user.id, { onDelete: "cascade" }),
 });
 
-// Define the `accounts` table structure
-export const AccountSchema = pgTable("accounts", {
-  id: uuid("id").defaultRandom().primaryKey(), // Unique account ID
-  userId: uuid("user_id")
+export const account = pgTable("account", {
+  id: text("id").primaryKey(),
+  accountId: text("account_id").notNull(),
+  providerId: text("provider_id").notNull(),
+  userId: text("user_id")
     .notNull()
-    .references(() => UserSchema.id, { onDelete: "cascade" }), // Foreign key to users
-  accountId: text("account_id").notNull(), // ID of the account as provided by the SSO or equal to userId for credential accounts
-  providerId: text("provider_id").notNull(), // ID of the provider
-  accessToken: text("access_token"), // Optional: Access token of the account
-  refreshToken: text("refresh_token"), // Optional: Refresh token of the account
-  accessTokenExpiresAt: timestamp("access_token_expires_at"), // Optional: Time when the access token expires
-  refreshTokenExpiresAt: timestamp("refresh_token_expires_at"), // Optional: Time when the refresh token expires
-  scope: text("scope"), // Optional: Scope of the account
-  idToken: text("id_token"), // Optional: ID token returned from the provider
-  password: text("password"), // Optional: Password for email/password authentication
-  createdAt: timestamp("created_at").defaultNow().notNull(), // Timestamp of when the account was created
-  updatedAt: timestamp("updated_at").defaultNow().notNull(), // Timestamp of when the account was updated
+    .references(() => user.id, { onDelete: "cascade" }),
+  accessToken: text("access_token"),
+  refreshToken: text("refresh_token"),
+  idToken: text("id_token"),
+  accessTokenExpiresAt: timestamp("access_token_expires_at"),
+  refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+  scope: text("scope"),
+  password: text("password"),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
 });
 
-// Define the `verifications` table structure
-export const VerificationSchema = pgTable("verifications", {
-  id: uuid("id").defaultRandom().primaryKey(), // Unique verification ID
-  identifier: text("identifier").notNull(), // Identifier for the verification request
-  value: text("value").notNull(), // Value to be verified
-  expiresAt: timestamp("expires_at").notNull(), // Time when the verification request expires
-  createdAt: timestamp("created_at").defaultNow().notNull(), // Timestamp of when the verification request was created
-  updatedAt: timestamp("updated_at").defaultNow().notNull(), // Timestamp of when the verification request was updated
+export const verification = pgTable("verification", {
+  id: text("id").primaryKey(),
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at"),
+  updatedAt: timestamp("updated_at"),
 });
+
+export const schema = { user, session, account, verification };
