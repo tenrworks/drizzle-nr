@@ -9,6 +9,13 @@ import { nextCookies } from "better-auth/next-js";
 export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
+    socialProviders: {
+      google: {
+        prompt: "select_account", // optional
+        clientId: process.env.GOOGLE_CLIENT_ID as string,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      },
+    },
   },
 
   database: drizzleAdapter(db, {
@@ -32,3 +39,5 @@ export const auth = betterAuth({
   // cookieSameSite: "lax",
   // Optional: you can add a custom session cookie path
 });
+
+console.log("Auth config:", auth);
