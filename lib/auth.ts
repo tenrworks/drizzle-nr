@@ -7,6 +7,10 @@ import { schema } from "@/db/schema";
 import { nextCookies } from "better-auth/next-js";
 
 export const auth = betterAuth({
+  database: drizzleAdapter(db, {
+    provider: "pg",
+    schema: schema, // your drizzle schema, which is importing from your drizzle schema file
+  }),
   emailAndPassword: {
     enabled: true,
     socialProviders: {
@@ -18,10 +22,6 @@ export const auth = betterAuth({
     },
   },
 
-  database: drizzleAdapter(db, {
-    provider: "pg",
-    schema: schema, // your drizzle schema,
-  }),
   plugins: [nextCookies()],
   // Optional: you can add a custom session cookie name
   // cookieName: "your-custom-cookie-name",

@@ -1,11 +1,13 @@
 "use client";
-import { signIn } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
 const SignInButton = () => {
   const handleSignIn = async () => {
     try {
-      const result = await signIn();
-      console.log("Sign-in successful:", result);
+      const result = await authClient.signIn.social({
+        provider: "google",
+      });
+      console.log("Sign-in successful:", result); // Moved outside the API call
     } catch (error) {
       console.error("Sign-in failed:", error);
     }
