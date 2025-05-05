@@ -2,7 +2,7 @@ import { signIn, signUp } from "@/serverActions/users";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Signout from "./components/signout";
-import SignInButton from "./components/googleSignIn";
+import GoogleSignInButton from "./components/googleSignIn";
 
 export default async function Home() {
   const session = await auth.api.getSession({
@@ -23,7 +23,7 @@ export default async function Home() {
         Sign Up
       </button>
       <Signout />
-      <SignInButton />
+      <GoogleSignInButton />
       <p className="text-sm text-center">
         {session?.user ? `Welcome ${session.user.name} ` : "Not signed in"}
       </p>
