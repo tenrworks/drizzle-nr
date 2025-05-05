@@ -1,4 +1,4 @@
-import { signIn, signUp } from "@/server/users";
+import { signIn, signUp } from "@/serverActions/users";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Signout from "./components/signout";

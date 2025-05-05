@@ -13,12 +13,13 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    socialProviders: {
-      google: {
-        prompt: "select_account", // optional
-        clientId: process.env.GOOGLE_CLIENT_ID as string,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      },
+  },
+  socialProviders: {
+    google: {
+      prompt: "select_account", // optional
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      redirectUri: "http://localhost:3000/api/auth/callback/google", // optional
     },
   },
 
@@ -38,6 +39,21 @@ export const auth = betterAuth({
   // Optional: you can add a custom session cookie sameSite flag
   // cookieSameSite: "lax",
   // Optional: you can add a custom session cookie path
+  // Optional: you can add a custom session cookie name
+  // cookieName: "your-custom-cookie-name",
+  // Optional: you can add a custom session cookie path
+  // cookiePath: "/your-custom-path",
+  // Optional: you can add a custom session cookie domain
+  // cookieDomain: "your-custom-domain",
+  // Optional: you can add a custom session cookie max age
+  // cookieMaxAge: 60 * 60 * 24 * 7, // 1 week
+  // Optional: you can add a custom session cookie secure flag
+  // cookieSecure: process.env.NODE_ENV === "production",
+  // Optional: you can add a custom session cookie httpOnly flag
+  // cookieHttpOnly: true,
+  // Optional: you can add a custom session cookie sameSite flag
+  // cookieSameSite: "lax",
+  // Optional: you can add a custom session cookie path
 });
 
-console.log("Auth config:", auth);
+// console.log("Auth config:", auth);
