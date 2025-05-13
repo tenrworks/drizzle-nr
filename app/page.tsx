@@ -16,7 +16,7 @@ export default async function Home() {
 	];
 	return (
 		<main className='flex flex-col items-center'>
-			<h1 className='pt-12 text-6xl uppercase text-black font-bold'>
+			<h1 className='pt-12 tracking-[-0.1em] text-6xl uppercase text-black font-bold'>
 				no routine
 			</h1>
 			<div className='flex flex-col my-4'>
@@ -42,22 +42,31 @@ export default async function Home() {
 					height={100}
 					width={100}
 					priority
-					className='h-24 w-24 object-contain'
+					className='h-80 w-80 object-contain'
 				/>
 			</div>
 			{/* UPCOMING EVENT DETAILS */}
-			<div>
-				<p>EVENT TITLE</p>
-				<p>EVENT DATE</p>
-				<p>EVENT LOCATION</p>
+			<div className='flex flex-col items-center my-4'>
+				<p className='text-black font-medium'>NEXT LINK</p>
+				<p className='text-black font-medium'>Dodgeball</p>
+				<p className='text-black font-medium'>May 18</p>
+				<p className='text-black font-medium'>NYC</p>
 			</div>
 			{/* REGISTER FOR EVENT FORM */}
 			<form>
 				<input type='email' className='bg-white' />
-				<div>
-					<button type='submit'>RSVP</button>
+				<div className='text-center'>
+					<button
+						className='mt-2 text-black font-medium text-2xl tracking-[-0.07em]'
+						type='submit'
+					>
+						RSVP
+					</button>
 				</div>
 			</form>
+			<h1 className='pt-12 tracking-[-0.1em] text-6xl uppercase text-black font-bold'>
+				no routine
+			</h1>
 		</main>
 	);
 }
